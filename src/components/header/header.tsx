@@ -8,7 +8,7 @@ import { RESET_DATA, GET_NUTRITION_LIST } from "src/common/queries";
 
 export default function () {
   const [resetData] = useMutation(RESET_DATA, {
-    refetchQueries: [{ query: GET_NUTRITION_LIST, variables: { sortBy: "dessert" } }],
+    refetchQueries: [{ query: GET_NUTRITION_LIST }],
   });
 
   const handleClick = () => {

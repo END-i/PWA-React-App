@@ -45,7 +45,7 @@ const fields = [
 
 export default function ({ show, setShow }: ModalProps) {
   const [createNutrition] = useMutation(ADD_NUTRITION, {
-    refetchQueries: [{ query: GET_NUTRITION_LIST, variables: { sortBy: "dessert" } }],
+    refetchQueries: [{ query: GET_NUTRITION_LIST }],
   });
 
   const modalRef = useRef<HTMLDivElement>(null);

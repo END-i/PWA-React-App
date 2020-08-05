@@ -33,7 +33,7 @@ export const SortButton = styled(SortIcon)`
   cursor: pointer;
 `;
 
-export const NoRows = styled.p`
+export const Stat = styled.p`
   text-align: center;
   margin: 5px 0;
 `;

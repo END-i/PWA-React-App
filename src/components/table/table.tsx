@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 
-import { TableProps } from "src/common/types";
-import { Row, Column, Checkbox, SortButton, NoRows, TableWrapper } from "./styled";
+import { GET_NUTRITION_LIST } from "src/common/queries";
+import { Row, Column, Checkbox, SortButton, Stat, TableWrapper } from "./styled";
 import { TableHeader } from "src/components";
+import { Nutrition, TableProps } from "src/common/types";
 
 const head = [
   { key: "dessert", label: "Dessert (100g serving)" },
@@ -12,12 +14,22 @@ const head = [
   { key: "protein", label: "Protein (g)" },
 ];
 
-export default function ({ nutritionList = [], sortBy, setSortBy, setShow }: TableProps) {
+export default function ({ setShow }: TableProps) {
   const [selected, setSelected] = useState<string[]>([]);
+  const [nutritionList, setNutritionList] = useState<Nutrition[]>([]);
+  const [sortBy, setSortBy] = useState("dessert");
+  const { loading, error, data } = useQuery(GET_NUTRITION_LIST);
 
   useEffect(() => {
+    if (data) {
+      setNutritionList(data.nutritionList);
+    }
     setSelected([]);
-  }, [nutritionList]);
+  }, [data]);
+
+  useEffect(() => {
+    sort();
+  }, [sortBy]);
 
   const handleChange = (id: string, checked: boolean) => () => {
     const selectedIdx = selected.findIndex((i) => i === id);
@@ -42,6 +54,26 @@ export default function ({ nutritionList = [], sortBy, setSortBy, setShow }: Tab
     }
   };
 
+  const sort = () => {
+    if (data) {
+      const subField = sortBy === "dessert" ? "dessert" : "nutritionInfo";
+      const sortData = [...data.nutritionList].sort(
+        (_a: { [x: string]: any }, _b: { [x: string]: any }) => {
+          const a = subField ? Number(_a[subField][sortBy]) : _a[sortBy].toLowerCase();
+          const b = subField ? Number(_b[subField][sortBy]) : _b[sortBy].toLowerCase();
+          if (a < b) {
+            return -1;
+          }
+          if (a > b) {
+            return 1;
+          }
+          return 0;
+        },
+      );
+      setNutritionList(sortData);
+    }
+  };
+
   const checkedAll = () => {
     if (!nutritionList.length || selected.length !== nutritionList.length) {
       return false;
@@ -50,6 +82,14 @@ export default function ({ nutritionList = [], sortBy, setSortBy, setShow }: Tab
   };
 
   const list = () => {
+    if (loading) {
+      return <Stat>Loading...</Stat>;
+    }
+
+    if (error) {
+      return <Stat>Error :(</Stat>;
+    }
+
     if (nutritionList.length) {
       return nutritionList.map(
         ({ id, dessert, nutritionInfo: { calories, fat, carbs, protein } }) => {
@@ -73,8 +113,9 @@ export default function ({ nutritionList = [], sortBy, setSortBy, setShow }: Tab
         },
       );
     }
-    return <NoRows>No rows</NoRows>;
+    return <Stat>No rows</Stat>;
   };
+
   return (
     <div>
       <TableHeader {...{ selected, setSelected, setShow }} />

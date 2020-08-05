@@ -27,9 +27,6 @@ export interface ButtonProps extends ButtonWrapperProps {
 
 export interface TableProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  nutritionList: Nutrition[];
-  sortBy: string;
-  setSortBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface TableHeaderProps {

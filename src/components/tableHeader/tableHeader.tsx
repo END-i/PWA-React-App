@@ -10,7 +10,7 @@ import { ReactComponent as DeleteIcon } from "src/assets/icons/delete.svg";
 
 export default function ({ selected, setShow, setSelected }: TableHeaderProps) {
   const [deleteNutrition] = useMutation(DELETE_NUTRITION, {
-    refetchQueries: [{ query: GET_NUTRITION_LIST, variables: { sortBy: "dessert" } }],
+    refetchQueries: [{ query: GET_NUTRITION_LIST }],
   });
 
   const handleDelete = () => {
