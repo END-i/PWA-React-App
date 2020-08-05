@@ -54,7 +54,7 @@ export default function ({ setShow }: TableProps) {
     }
   };
 
-  const handleSortList = () => {
+  function handleSortList() {
     if (data) {
       const subField = sortBy === "dessert" ? "dessert" : "nutritionInfo";
       const sortData = [...data.nutritionList].sort(
@@ -72,7 +72,7 @@ export default function ({ setShow }: TableProps) {
       );
       setNutritionList(sortData);
     }
-  };
+  }
 
   const checkedAll = () => {
     if (!nutritionList.length || selected.length !== nutritionList.length) {
