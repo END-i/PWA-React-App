@@ -29,6 +29,7 @@ export default function ({ setShow }: TableProps) {
 
   useEffect(() => {
     handleSortList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]);
 
   const handleChange = (id: string, checked: boolean) => () => {
