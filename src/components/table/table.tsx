@@ -28,7 +28,7 @@ export default function ({ setShow }: TableProps) {
   }, [data]);
 
   useEffect(() => {
-    sort();
+    handleSortList();
   }, [sortBy]);
 
   const handleChange = (id: string, checked: boolean) => () => {
@@ -54,7 +54,7 @@ export default function ({ setShow }: TableProps) {
     }
   };
 
-  const sort = () => {
+  const handleSortList = () => {
     if (data) {
       const subField = sortBy === "dessert" ? "dessert" : "nutritionInfo";
       const sortData = [...data.nutritionList].sort(
